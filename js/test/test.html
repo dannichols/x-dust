@@ -22,7 +22,13 @@
             //_print(dust.compileFn(code, name));
             if (model !== UNDEFINED) {
               _print('------RENDERED------');
-              _print(dust.render(name, model));
+              dust.render(name, model, function(err, out) {
+                if (err) {
+                  throw err;
+                } else {
+                  _print(out);
+                }
+              });
             }
         } catch(e) {
           _print('------ERROR------');

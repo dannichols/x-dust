@@ -888,10 +888,20 @@ var XDustContext = _extend(function(head, tail, params) {
      *
      * @param {String} name  The name of the template to render
      * @param {Object} model  The data object to pass to the template
-     * @return {String}  The rendered output string
+     * @param {Function} callback  A callback in the form f(err, out)
+     *     that accepts an error as its first argument and the string
+     *     output of the renderer as the second. If the error is not
+     *     null, then a problem occurred during rendering.
      */
-    render: function(name, model) {
-      return this.templates[name].render(model);
+    render: function(name, model, callback) {
+      var out = null,
+          err = null;
+      try {
+        out = this.templates[name].render(model);
+      } catch(e) {
+        err = e;
+      }
+      callback(err, out);
     }
   });
 

@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XDust", "XDust\XDust.csproj", "{F3133312-3324-4104-8DE3-9B3F3DD655A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XDustTest", "XDustTest\XDustTest.csproj", "{16F47672-3E0D-48E2-B509-F5298B9D2CAD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F3133312-3324-4104-8DE3-9B3F3DD655A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3133312-3324-4104-8DE3-9B3F3DD655A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3133312-3324-4104-8DE3-9B3F3DD655A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3133312-3324-4104-8DE3-9B3F3DD655A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16F47672-3E0D-48E2-B509-F5298B9D2CAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16F47672-3E0D-48E2-B509-F5298B9D2CAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16F47672-3E0D-48E2-B509-F5298B9D2CAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16F47672-3E0D-48E2-B509-F5298B9D2CAD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

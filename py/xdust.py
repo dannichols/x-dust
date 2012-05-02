@@ -359,7 +359,7 @@ class HelperNode(LogicNode):
         self.context = name
     def render(self, chain, context, model):
         chain = RenderChain(chain, self)
-        context = Context(props=self.params, parent=context)
+        context = Context(context, None, self.params)
         helper = dust.helpers[self.context]
         return helper(chain, context, model)
 

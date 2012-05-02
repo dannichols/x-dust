@@ -17,7 +17,7 @@ namespace XDust
                     this.Parameters[name] = parameters[name];
                 }
             }
-            this.Tail = tail is IScriptable ? (IScriptable)tail : new Scriptable(tail);
+            this.Tail = Scriptable.From(tail);
         }
 
         public Context Head { get; set; }
@@ -60,7 +60,7 @@ namespace XDust
         {
             if (null != other)
             {
-                this.Tail = other is IScriptable ? (IScriptable)other : new Scriptable(other);
+                this.Tail = Scriptable.From(other);
                 if (other is Context)
                 {
                     foreach (var param in ((Context)other).Parameters)

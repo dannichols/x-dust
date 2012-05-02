@@ -8,6 +8,18 @@ namespace XDust
 {
     public class Scriptable : IScriptable
     {
+        public static IScriptable From(Object obj)
+        {
+            if (null != obj && obj is IScriptable)
+            {
+                return (IScriptable)obj;
+            }
+            else
+            {
+                return new Scriptable(obj);
+            }
+        }
+
         private Object target;
         private Boolean targetIsValue;
         private Boolean targetIsDict;
@@ -15,7 +27,7 @@ namespace XDust
         private Boolean targetIsContext;
         private Boolean targetIsEnumerable;
 
-        public Scriptable(Object target)
+        private Scriptable(Object target)
         {
             if (null == target)
             {

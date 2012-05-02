@@ -15,7 +15,7 @@ namespace XDust
 
         public override Object PrepareModel(RenderChain chain, Context context, Object model)
         {
-            IScriptable scriptable = new Scriptable(model);
+            IScriptable scriptable = Scriptable.From(model);
             if (scriptable["@idx"] != null)
             {
                 return scriptable["@idx"].ToString();

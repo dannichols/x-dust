@@ -23,12 +23,25 @@ namespace XDust
                 {"u", s => this.EscapeURI(s)},
                 {"uc", s => this.EscapeURIComponent(s)}
             };
+            this.ContextPath = Directory.GetCurrentDirectory();
         }
 
         protected XDustNodeListParser Parser { get; set; }
         public Dictionary<String, XDustTemplate> Templates { get; private set; }
         public Dictionary<String, IXDustHelper> Helpers { get; private set; }
         public Dictionary<String, Func<String, String>> Filters { get; private set; }
+        private String _contextPath;
+        public String ContextPath
+        {
+            get
+            {
+                return this._contextPath;
+            }
+            set
+            {
+                this._contextPath = value.Replace("\\", "/").Replace("//", "/");
+            }
+        }
 
         public String EscapeHTML(Object obj)
         {
@@ -86,6 +99,10 @@ namespace XDust
             else
             {
                 String code;
+                if (sourceFile.StartsWith("~"))
+                {
+                    sourceFile = sourceFile.Replace("~", this.ContextPath);
+                }
                 using (FileStream fs = new FileStream(sourceFile, FileMode.Open))
                 {
                     try

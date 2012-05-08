@@ -283,10 +283,9 @@ test('example', """
 test('example', """
 {+block/}
 """, {})
-
 #print "String literals in partial tags"
 test('example', """
-{>"templates/external.dust.html"/}
+{>"~/templates/external.dust.html"/}
 """, {
     'name': 'John Doe',
     'role': 'CEO',
@@ -301,7 +300,7 @@ test('example', """
 #print "Interpolated string literals in partial tags"
 test('example', """
 {#employees}
-  {>"templates/{type}.dust.html"/}
+  {>"~/templates/{type}.dust.html"/}
 {/employees}
 """, {
     'employees': [

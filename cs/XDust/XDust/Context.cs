@@ -5,7 +5,7 @@ using System.Text;
 
 namespace XDust
 {
-    public class Context : IEnumerable<String>, IScriptable
+    public class Context : IScriptable
     {
         public Context(Object head, Object tail, Dictionary<String, Object> parameters)
         {
@@ -56,21 +56,6 @@ namespace XDust
             }
         }
 
-        public void Update(Object other)
-        {
-            if (null != other)
-            {
-                this.Tail = Scriptable.From(other);
-                if (other is Context)
-                {
-                    foreach (var param in ((Context)other).Parameters)
-                    {
-                        this.Parameters[param.Key] = param.Value;
-                    }
-                }
-            }
-        }
-
         #region IEnumerable<string> Members
 
         public IEnumerator<String> GetEnumerator()
@@ -92,15 +77,6 @@ namespace XDust
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
-        }
-
-        #endregion
-
-        #region IEnumerable<string> Members
-
-        IEnumerator<string> IEnumerable<string>.GetEnumerator()
-        {
-            throw new NotImplementedException();
         }
 
         #endregion

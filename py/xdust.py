@@ -28,6 +28,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 """
 
+import os
 import re
 import urllib
 from cStringIO import StringIO
@@ -567,6 +568,16 @@ class Dust(object):
             'u': self.escape_uri,
             'uc': self.escape_uri_component
             }
+        self._context_path = None
+    def get_context_path(self):
+        if not self._context_path:
+            self.set_context_path(os.getcwd())
+        return self._context_path
+    def set_context_path(self, value):
+        self._context_path = value.replace('\\', '/').replace('//', '/')
+    def del_context_path(self):
+        del self._context_path
+    context_path = property(get_context_path, set_context_path, del_context_path)
     def escape_html(self, string):
         string = str(string)
         if not re.match(r'[&<>\"]', string):
@@ -590,6 +601,8 @@ class Dust(object):
         if src_file in self.templates:
             return self.templates[name].root_node
         else:
+            if src_file.startswith('~'):
+                src_file = src_file.replace('~', self.context_path);
             f = open(src_file, 'r')
             code = f.read()
             f.close()

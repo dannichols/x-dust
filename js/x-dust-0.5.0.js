@@ -1,5 +1,5 @@
 /*
-dust.py 0.5.0
+x-dust 0.5.0
 
 Copyright (c) 2012 Dan Nichols
 
@@ -764,6 +764,26 @@ var XDustContext = _extend(function(head, tail, params) {
       u: this.escapeURI,
       uc: this.escapeURIComponent
     };
+    var contextPath = null;
+    /**
+     * @method getContextPath
+     * Gets the base URL for templates
+     * @return {String}  The current base URL
+     */
+    this.getContextPath = function() {
+      if (!contextPath) {
+        this.setContextPath(window.location.toString());
+      }
+      return contextPath;
+    };
+    /**
+     * @method setContextPath
+     * Sets the base URL for templates
+     * @param {String} value  The new base URL
+     */
+    this.setContextPath = function(value) {
+      contextPath = value.split('#')[0].split('?')[0].replace(/\/[^\/]*?\..[^\/]*?$/, '');
+    };
   }, {
     /**
      * @method escapeHTML
@@ -874,6 +894,9 @@ var XDustContext = _extend(function(head, tail, params) {
       if (_hasProp(this.templates, srcFile)) {
         return this.templates[name].rootNode;
       } else {
+        if (srcFile.indexOf('~') == 0) {
+          srcFile = srcFile.replace('~', this.getContextPath());
+        }
         var xhr = new XMLHttpRequest();
         xhr.open('GET', srcFile, false);
         xhr.send(null);

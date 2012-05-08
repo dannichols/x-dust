@@ -150,11 +150,11 @@ End\
 {+block/}\
 ', {name: 'John Doe', role: 'CEO', degrees: ['MBA', 'PMP', 'BS'], user: {name: 'Jane Doe', role: 'CMO', degrees: ['BFA']}});
         _test('example', '\
-{>"templates/external.dust.html"/}\
+{>"~/templates/external.dust.html"/}\
 ', {name: 'John Doe', role: 'CEO', degrees: ['MBA', 'PMP', 'BS'], user: {name: 'Jane Doe', role: 'CMO', degrees: ['BFA']}});
         _test('example', '\
 {#employees}\
-  {>"templates/{type}.dust.html"/}\
+  {>"~/templates/{type}.dust.html"/}\
 {/employees}\
 ', {employees: [{type: 'foo', name: 'John Doe', role: 'CEO', degrees: ['MBA', 'PMP', 'BS']}, {type: 'bar', name: 'Jane Doe', role: 'CMO', degrees: ['BFA']}]});
         _test('example', '\

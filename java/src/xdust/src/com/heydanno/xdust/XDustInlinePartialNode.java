@@ -3,10 +3,10 @@ package com.heydanno.xdust;
 import java.util.HashMap;
 import java.util.Map;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 public class XDustInlinePartialNode extends XDustNodeList implements
 		IXDustSectionNode {
+
+	private static final long serialVersionUID = 8417337831119373869L;
 
 	public XDustInlinePartialNode(String name) {
 		super(null);
@@ -24,7 +24,6 @@ public class XDustInlinePartialNode extends XDustNodeList implements
 		this.name = name;
 	}
 
-	@Override
 	public Map<String, XDustNode> getParameters() {
 		if (null == this.parameters) {
 			this.parameters = new HashMap<String, XDustNode>();
@@ -48,18 +47,16 @@ public class XDustInlinePartialNode extends XDustNodeList implements
 
 	@Override
 	public String render(XDust dust, RenderChain chain, Context context,
-			Object model) throws Exception {
+			Object model) {
 		return "";
 	}
 
-	@Override
 	public XDustNodeList startBody(String name) {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
-	@Override
 	public void endBody() {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 }

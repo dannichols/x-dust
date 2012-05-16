@@ -1,13 +1,15 @@
 package com.heydanno.xdust;
 
-import java.lang.reflect.InvocationTargetException;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class Context implements IScriptable {
-	
+public class Context implements IScriptable, Serializable {
+
+	private static final long serialVersionUID = -5834248967445485253L;
+
 	public Context(Object head, Object tail, Map<String, ?> parameters) {
 		if (null != parameters) {
 			for (String key : parameters.keySet()) {
@@ -16,27 +18,27 @@ public class Context implements IScriptable {
 		}
 		this.tail = Scriptable.from(tail);
 	}
-	
+
 	private Context head;
 	private IScriptable tail;
 	private Map<String, Object> parameters;
-	
+
 	public Context getHead() {
 		return this.head;
 	}
-	
+
 	public void setHead(Context value) {
 		this.head = value;
 	}
-	
+
 	public IScriptable getTail() {
 		return this.tail;
 	}
-	
+
 	public void setTail(IScriptable value) {
 		this.tail = value;
 	}
-	
+
 	public Map<String, Object> getParameters() {
 		if (null == this.parameters) {
 			this.parameters = new HashMap<String, Object>();
@@ -44,7 +46,6 @@ public class Context implements IScriptable {
 		return this.parameters;
 	}
 
-	@Override
 	public Object getValue() {
 		if (null != this.tail) {
 			return this.tail.getValue();
@@ -55,7 +56,6 @@ public class Context implements IScriptable {
 		}
 	}
 
-	@Override
 	public boolean isValue() {
 		if (null != this.tail) {
 			return this.tail.isValue();
@@ -66,8 +66,7 @@ public class Context implements IScriptable {
 		}
 	}
 
-	@Override
-	public Object get(String name) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+	public Object get(String name) {
 		if (".".equals(name)) {
 			return this.getValue();
 		} else if (this.tail.hasKey(name)) {
@@ -81,8 +80,7 @@ public class Context implements IScriptable {
 		}
 	}
 
-	@Override
-	public boolean hasKey(String name) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+	public boolean hasKey(String name) {
 		if (null != this.parameters && this.parameters.containsKey(name)) {
 			return true;
 		} else if (null != this.tail && this.tail.hasKey(name)) {
@@ -94,7 +92,6 @@ public class Context implements IScriptable {
 		}
 	}
 
-	@Override
 	public Iterator<String> iterator() {
 		if (this.tail.isValue()) {
 			return null;
@@ -103,17 +100,14 @@ public class Context implements IScriptable {
 		}
 	}
 
-	@Override
 	public boolean isList() {
 		return null != this.tail && this.tail.isList();
 	}
 
-	@Override
 	public boolean isTruthy() {
 		return null != this.tail && this.tail.isTruthy();
 	}
 
-	@Override
 	public List<Object> asList() {
 		return this.isList() ? this.tail.asList() : null;
 	}

@@ -1,13 +1,15 @@
 package com.heydanno.xdust;
 
-import java.lang.reflect.InvocationTargetException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-public class ContextResolver {
+public class ContextResolver implements Serializable {
+
+	private static final long serialVersionUID = -5143410657368012472L;
 
 	public ContextResolver(String path) {
 		if (path.startsWith(".")) {
@@ -47,17 +49,15 @@ public class ContextResolver {
 		return sb.toString();
 	}
 
-	public Object resolve(Context context, Object model)
-			throws IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException {
+	public Object resolve(Context context, Object model) {
 		Object copy = new Context(context, model, null);
 		if (null != model) {
 			if (model instanceof Collection<?>) {
 				copy = new ArrayList<Object>((Collection<?>) model);
 			} else if (model.getClass().isArray()) {
-				copy = new ArrayList<Object>(Arrays.asList((Object[])model));
-			} else if (model instanceof Context && ((Context)model).isList()) {
-				copy = ((Context)model).asList();
+				copy = new ArrayList<Object>(Arrays.asList((Object[]) model));
+			} else if (model instanceof Context && ((Context) model).isList()) {
+				copy = ((Context) model).asList();
 			} else {
 				for (String segment : this.getPath()) {
 					Context ctx = (Context) copy;

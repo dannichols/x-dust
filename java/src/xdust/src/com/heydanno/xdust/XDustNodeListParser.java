@@ -1,19 +1,19 @@
 package com.heydanno.xdust;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+public class XDustNodeListParser implements Serializable {
 
-public class XDustNodeListParser {
-
-	private final char[] OPERATORS = new char[] { '~', '#', '?', '@', ':', '<',
-			'>', '+', '/', '^' };
-	private final char[] SECTION_OPERATORS = new char[] { '#', '?', '@', ':',
-			'+', '<' };
+	private static final long serialVersionUID = 2933388538928074080L;
+	private static final char[] OPERATORS = new char[] { '~', '#', '?', '@',
+			':', '<', '>', '+', '/', '^' };
+	private static final char[] SECTION_OPERATORS = new char[] { '#', '?', '@',
+			':', '+', '<' };
 
 	public XDustNodeListParser() {
 		this.setLastEnd(0);
@@ -28,7 +28,7 @@ public class XDustNodeListParser {
 	public void setLastEnd(int lastEnd) {
 		this.lastEnd = lastEnd;
 	}
-	
+
 	private boolean contains(char[] arr, char c) {
 		for (int i = 0; i < arr.length; i++) {
 			if (arr[i] == c) {
@@ -103,7 +103,7 @@ public class XDustNodeListParser {
 					} else if ("sep".equals(name)) {
 						node = new XDustSepNode(null);
 					} else {
-						throw new NotImplementedException();
+						throw new UnsupportedOperationException();
 					}
 				} else if (op == '>') {
 					boolean isExternal = tagName.startsWith("\"");
@@ -120,7 +120,7 @@ public class XDustNodeListParser {
 				} else if (op == '/' || op == ':') {
 					node = null;
 				} else {
-					throw new NotImplementedException();
+					throw new UnsupportedOperationException();
 				}
 				if (!selfClosed) {
 					if (contains(SECTION_OPERATORS, op)) {

@@ -4,6 +4,8 @@ import java.util.Map;
 
 public class XDustHelperNode extends XDustLogicNode {
 
+	private static final long serialVersionUID = -3046616917519170745L;
+
 	public XDustHelperNode(String name, String scope,
 			Map<String, XDustNode> parameters) {
 		super(null, scope, parameters);
@@ -27,7 +29,7 @@ public class XDustHelperNode extends XDustLogicNode {
 
 	@Override
 	public String render(XDust dust, RenderChain chain, Context context,
-			Object model) throws Exception {
+			Object model) {
 		chain = new RenderChain(chain, this);
 		context = new Context(context, null, this.getParameters());
 		IXDustHelper helper = dust.getHelpers().get(this.getName());

@@ -1,15 +1,19 @@
 package com.heydanno.xdust;
 
-public class RenderChain {
-	
+import java.io.Serializable;
+
+public class RenderChain implements Serializable {
+
+	private static final long serialVersionUID = 3631059447121501608L;
+
 	public RenderChain(RenderChain head, XDustNode tail) {
 		this.head = head;
 		this.tail = tail;
 	}
-	
+
 	private RenderChain head;
 	private XDustNode tail;
-	
+
 	public RenderChain getHead() {
 		return this.head;
 	}

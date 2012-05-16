@@ -1,14 +1,16 @@
 package com.heydanno.xdust;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class Scriptable implements IScriptable {
+public class Scriptable implements IScriptable, Serializable {
+
+	private static final long serialVersionUID = -6344366299280534777L;
 
 	public static IScriptable from(Object obj) {
 		if (null != obj && obj instanceof IScriptable) {
@@ -50,7 +52,6 @@ public class Scriptable implements IScriptable {
 		}
 	}
 
-	@Override
 	public Object getValue() {
 		if (this.targetIsValue) {
 			return this.target;
@@ -62,7 +63,6 @@ public class Scriptable implements IScriptable {
 		}
 	}
 
-	@Override
 	public boolean isValue() {
 		if (this.targetIsContext && ((Context) this.target).getTail() != null) {
 			return ((Context) this.target).getTail().isValue();
@@ -71,13 +71,11 @@ public class Scriptable implements IScriptable {
 		}
 	}
 
-	@Override
 	public boolean isList() {
 		return this.targetIsList;
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public List<Object> asList() {
 		if (this.targetIsList) {
 			Class<?> c = this.target.getClass();
@@ -97,7 +95,6 @@ public class Scriptable implements IScriptable {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public boolean isTruthy() {
 		if (this.targetIsNull) {
 			return false;
@@ -153,9 +150,7 @@ public class Scriptable implements IScriptable {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
-	public Object get(String name) throws IllegalArgumentException,
-			IllegalAccessException, InvocationTargetException {
+	public Object get(String name) {
 		if (this.targetIsContext) {
 			return ((Context) this.target).get(name);
 		} else if (this.targetIsNull || this.targetIsValue) {
@@ -165,20 +160,26 @@ public class Scriptable implements IScriptable {
 		} else {
 			Method m = this.getGetter(this.target, name);
 			if (null != m) {
-				return m.invoke(this.target);
+				try {
+					return m.invoke(this.target);
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
 			}
 			Field f = this.getField(this.target, name);
 			if (null != f) {
-				return f.get(this.target);
+				try {
+					return f.get(this.target);
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
 			}
 		}
 		return null;
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
-	public boolean hasKey(String name) throws IllegalArgumentException,
-			IllegalAccessException, InvocationTargetException {
+	public boolean hasKey(String name) {
 		if (this.targetIsNull || this.targetIsValue) {
 			return false;
 		} else if (this.targetIsMap) {
@@ -192,7 +193,6 @@ public class Scriptable implements IScriptable {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public Iterator<String> iterator() {
 		if (this.targetIsNull || this.targetIsValue) {
 			return null;

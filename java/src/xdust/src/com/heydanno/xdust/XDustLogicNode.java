@@ -1,14 +1,15 @@
 package com.heydanno.xdust;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class XDustLogicNode extends XDustNode implements IXDustSectionNode {
 
-	protected static final String BLOCK = "block";
-	protected static final String ELSE = "else";
+	private static final long serialVersionUID = 2169863162076222163L;
+
+	public static final String BLOCK = "block";
+	public static final String ELSE = "else";
 
 	public XDustLogicNode(String path, String scope,
 			Map<String, XDustNode> parameters) {
@@ -60,7 +61,6 @@ public class XDustLogicNode extends XDustNode implements IXDustSectionNode {
 		return this.currentBody;
 	}
 
-	@Override
 	public Map<String, XDustNode> getParameters() {
 		if (null == this.parameters) {
 			this.parameters = new HashMap<String, XDustNode>();
@@ -99,7 +99,6 @@ public class XDustLogicNode extends XDustNode implements IXDustSectionNode {
 		return sb.toString();
 	}
 
-	@Override
 	public XDustNodeList startBody(String name) {
 		XDustNodeList body = new XDustNodeList(null);
 		this.currentBody = body;
@@ -107,13 +106,12 @@ public class XDustLogicNode extends XDustNode implements IXDustSectionNode {
 		return body;
 	}
 
-	@Override
 	public void endBody() {
 		this.currentBody = null;
 	}
 
 	public Context prepareModel(XDust dust, RenderChain chain, Context context,
-			Object model) throws Exception {
+			Object model) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		for (String key : this.getParameters().keySet()) {
 			parameters.put(
@@ -126,7 +124,7 @@ public class XDustLogicNode extends XDustNode implements IXDustSectionNode {
 	}
 
 	public String renderBody(XDust dust, String name, RenderChain chain,
-			Context context, Object model) throws Exception {
+			Context context, Object model) {
 		StringBuilder sb = new StringBuilder();
 		XDustNodeList body = this.getBodies().containsKey(name) ? this
 				.getBodies().get(name) : null;
@@ -180,16 +178,14 @@ public class XDustLogicNode extends XDustNode implements IXDustSectionNode {
 		}
 	}
 
-	public String chooseBodyName(Context context, Object model)
-			throws IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException {
+	public String chooseBodyName(Context context, Object model) {
 		Object resolved = this.getContext().resolve(context, model);
 		return this.isTruthy(resolved) ? BLOCK : ELSE;
 	}
 
 	@Override
 	public String render(XDust dust, RenderChain chain, Context context,
-			Object model) throws Exception {
+			Object model) {
 		chain = new RenderChain(chain, this);
 		context = new Context(context, null, this.getParameters());
 		String bodyName = this.chooseBodyName(context, model);

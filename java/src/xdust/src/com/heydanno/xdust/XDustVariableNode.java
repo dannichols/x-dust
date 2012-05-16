@@ -6,7 +6,9 @@ import java.util.Iterator;
 import java.util.List;
 
 public class XDustVariableNode extends XDustNode {
-	
+
+	private static final long serialVersionUID = 3217038974087935258L;
+
 	public XDustVariableNode(String path, Collection<String> filters) {
 		super();
 		this.context = new ContextResolver(path);
@@ -15,10 +17,10 @@ public class XDustVariableNode extends XDustNode {
 			this.filters.addAll(filters);
 		}
 	}
-	
+
 	private ContextResolver context;
 	private List<String> filters;
-	
+
 	public ContextResolver getContext() {
 		return context;
 	}
@@ -38,21 +40,23 @@ public class XDustVariableNode extends XDustNode {
 
 	@Override
 	public String render(XDust dust, RenderChain chain, Context context,
-			Object model) throws Exception {
+			Object model) {
 		chain = new RenderChain(chain, this);
 		Object originalModel = model;
 		model = this.context.resolve(context, model);
 		String result = "";
 		if (null != model) {
 			if (model instanceof XDustNode) {
-				result = ((XDustNode)model).render(dust, chain, context, originalModel);
+				result = ((XDustNode) model).render(dust, chain, context,
+						originalModel);
 			} else if (model instanceof ContextResolver) {
-				Object temp = ((ContextResolver)model).resolve(context, originalModel);
+				Object temp = ((ContextResolver) model).resolve(context,
+						originalModel);
 				if (null != temp) {
 					result = temp.toString();
 				}
 			} else if (model instanceof IScriptable) {
-				Object temp = ((IScriptable)model).getValue();
+				Object temp = ((IScriptable) model).getValue();
 				if (null != temp) {
 					result = temp.toString();
 				}

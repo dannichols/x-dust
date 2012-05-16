@@ -1,8 +1,8 @@
 package com.heydanno.xdust;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 public class XDustEscapedCharacterNode extends XDustNode {
+
+	private static final long serialVersionUID = 762983140385368858L;
 
 	public XDustEscapedCharacterNode(String code) {
 		super();
@@ -29,18 +29,18 @@ public class XDustEscapedCharacterNode extends XDustNode {
 		} else if ("rb".equals(code)) {
 			this.setCharacter("}");
 		} else {
-			throw new NotImplementedException();
+			throw new UnsupportedOperationException();
 		}
 	}
 
 	public String getCharacter() {
 		return character;
 	}
-	
+
 	private void setCharacter(String value) {
 		this.character = value;
 	}
-	
+
 	@Override
 	public String toString() {
 		return String.format("{~%s}", this.getCode());
@@ -48,7 +48,7 @@ public class XDustEscapedCharacterNode extends XDustNode {
 
 	@Override
 	public String render(XDust dust, RenderChain chain, Context context,
-			Object model) throws Exception {
+			Object model) {
 		return this.character;
 	}
 

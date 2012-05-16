@@ -1,11 +1,12 @@
 package com.heydanno.xdust;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 public class XDustPartialNode extends XDustNode implements IXDustSectionNode {
+
+	private static final long serialVersionUID = 2564920555706288058L;
 
 	public XDustPartialNode(Object include, String scope) {
 		super();
@@ -35,7 +36,6 @@ public class XDustPartialNode extends XDustNode implements IXDustSectionNode {
 		this.scope = scope;
 	}
 
-	@Override
 	public Map<String, XDustNode> getParameters() {
 		if (null == this.parameters) {
 			this.parameters = new HashMap<String, XDustNode>();
@@ -62,7 +62,7 @@ public class XDustPartialNode extends XDustNode implements IXDustSectionNode {
 
 	@Override
 	public String render(XDust dust, RenderChain chain, Context context,
-			Object model) throws Exception {
+			Object model) {
 		if (null != this.getScope()) {
 			model = this.getScope().resolve(context, model);
 		}
@@ -74,18 +74,21 @@ public class XDustPartialNode extends XDustNode implements IXDustSectionNode {
 		} else {
 			name = this.getInclude().toString();
 		}
-		XDustNode template = dust.load(null, name);
+		XDustNode template;
+		try {
+			template = dust.load(null, name);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 		return template.render(dust, chain, context, model);
 	}
 
-	@Override
 	public XDustNodeList startBody(String name) {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
-	@Override
 	public void endBody() {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 }

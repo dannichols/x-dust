@@ -14,7 +14,6 @@ public class Program {
 
 		}
 
-		@Override
 		public void call(Exception error, String output) {
 			if (null != error) {
 				if (null != error.getMessage()) {

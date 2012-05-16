@@ -66,7 +66,6 @@ public class XDustNodeList extends XDustNode implements Iterable<XDustNode> {
 		return sb.toString();
 	}
 
-	@Override
 	public Iterator<XDustNode> iterator() {
 		return this.getNodes().iterator();
 	}

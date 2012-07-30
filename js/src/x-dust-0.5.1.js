@@ -373,7 +373,7 @@ var XDustContext = _extend(function(head, tail, params) {
         } else {
           result = model.toString();
         }
-        if (this.filters) {
+        if (this.filters.length) {
           _each(this.filters, function(i, flag) {
             if (dust.filters[flag]) {
               result = dust.filters[flag](result);
@@ -591,7 +591,7 @@ var XDustContext = _extend(function(head, tail, params) {
     // pass
   }, {
     parse: function(str) {
-      str = str.replace(/(\{!.+?!\})|(^\s+)|(\s+$)/gm, '');
+      str = str.replace(/(\{![\s\S]+?!\})|(^\s+)|(\s+$)/g, '');
       var nodes = [new XDustNodeList()],
           depth = 0,
           exp = /(\{[\~\#\?\@\:\<\>\+\/\^]?([a-zA-Z0-9_\$\.]+|"[^"]+")(\:[a-zA-Z0-9\$\.]+)?(\|[a-z]+)*?( \w+\=(("[^"]*?")|([\w\.]+)))*?\/?\})/mg,
@@ -802,7 +802,7 @@ var XDustContext = _extend(function(head, tail, params) {
       if (!/[&<>\"]/.test(str)) {
         return str;
       } else {
-        return str.replace(/&/, '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;').replace("'", '&squot;');
+        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&squot;');
       }
     },
     /**
@@ -814,7 +814,7 @@ var XDustContext = _extend(function(head, tail, params) {
      */
     escapeJS: function(str) {
       str = str + '';
-      return str.replace('\\', '\\\\').replace('"', '\\"').replace("'", "\\'").replace('\r', '\\r').replace('\u2028', '\\u2028').replace('\u2029', '\\u2029').replace('\n', '\\n').replace('\f', '\\f').replace('\t', '\\t')
+      return str.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/'/g, "\\'").replace(/\r/g, '\\r').replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029').replace(/\n/g, '\\n').replace(/\f/g, '\\f').replace(/\t/g, '\\t')
     },
     /**
      * @method escapeURI

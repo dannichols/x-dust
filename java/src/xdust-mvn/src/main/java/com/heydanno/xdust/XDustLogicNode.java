@@ -162,8 +162,8 @@ public class XDustLogicNode extends XDustNode implements IXDustSectionNode {
 	/**
 	 * Begins a new body
 	 * 
-	 * @param The
-	 *            name of the body
+	 * @param name
+	 *            The name of the body
 	 * @return The root node of the body
 	 */
 	public XDustNodeList startBody(String name) {

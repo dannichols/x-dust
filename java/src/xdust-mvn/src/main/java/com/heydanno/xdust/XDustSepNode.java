@@ -38,8 +38,6 @@ public class XDustSepNode extends XDustNodeList implements IXDustSectionNode {
 	/**
 	 * Readies a model to be rendered
 	 * 
-	 * @param dust
-	 *            The current dust render engine instance
 	 * @param chain
 	 *            The current chain of nodes being rendered
 	 * @param context

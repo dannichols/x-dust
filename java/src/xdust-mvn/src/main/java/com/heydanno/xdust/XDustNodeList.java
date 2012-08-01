@@ -68,8 +68,6 @@ public class XDustNodeList extends XDustNode implements Iterable<XDustNode> {
 	/**
 	 * Readies a model to be rendered
 	 * 
-	 * @param dust
-	 *            The current dust render engine instance
 	 * @param chain
 	 *            The current chain of nodes being rendered
 	 * @param context

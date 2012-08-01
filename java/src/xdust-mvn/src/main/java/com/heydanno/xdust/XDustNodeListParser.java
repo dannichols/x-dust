@@ -7,6 +7,9 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Utility used to parse dust template source code into an x-dust node tree
+ */
 public class XDustNodeListParser implements Serializable {
 
 	private static final long serialVersionUID = 2933388538928074080L;
@@ -15,16 +18,30 @@ public class XDustNodeListParser implements Serializable {
 	private static final char[] SECTION_OPERATORS = new char[] { '#', '?', '@',
 			':', '+', '<' };
 
+	/**
+	 * Constructor
+	 */
 	public XDustNodeListParser() {
 		this.setLastEnd(0);
 	}
 
 	private int lastEnd;
 
+	/**
+	 * Gets the last index that the parser processed
+	 * 
+	 * @return The index
+	 */
 	public int getLastEnd() {
 		return lastEnd;
 	}
 
+	/**
+	 * Sets the last index that the parser processed
+	 * 
+	 * @param lastEnd
+	 *            The index
+	 */
 	public void setLastEnd(int lastEnd) {
 		this.lastEnd = lastEnd;
 	}
@@ -38,6 +55,15 @@ public class XDustNodeListParser implements Serializable {
 		return false;
 	}
 
+	/**
+	 * Converts template code
+	 * 
+	 * @param dust
+	 *            The dust render engine instance
+	 * @param str
+	 *            The template source code to parse
+	 * @return The parsed x-dust node tree
+	 */
 	public XDustNodeList parse(XDust dust, String str) {
 		Pattern comments = Pattern.compile("\\{!.+?!\\}", Pattern.DOTALL);
 		str = comments.matcher(str).replaceAll("").trim();

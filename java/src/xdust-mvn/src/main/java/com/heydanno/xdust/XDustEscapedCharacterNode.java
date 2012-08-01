@@ -1,9 +1,18 @@
 package com.heydanno.xdust;
 
+/**
+ * Node representing a single escaped character
+ */
 public class XDustEscapedCharacterNode extends XDustNode {
 
 	private static final long serialVersionUID = 762983140385368858L;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param code
+	 *            The character code
+	 */
 	public XDustEscapedCharacterNode(String code) {
 		super();
 		this.setCode(code);
@@ -12,6 +21,11 @@ public class XDustEscapedCharacterNode extends XDustNode {
 	private String code;
 	private String character;
 
+	/**
+	 * Gets the character code
+	 * 
+	 * @return The character code
+	 */
 	public String getCode() {
 		return code;
 	}
@@ -33,6 +47,11 @@ public class XDustEscapedCharacterNode extends XDustNode {
 		}
 	}
 
+	/**
+	 * Gets the escaped sequence
+	 * 
+	 * @return The escaped sequence
+	 */
 	public String getCharacter() {
 		return character;
 	}
@@ -41,11 +60,29 @@ public class XDustEscapedCharacterNode extends XDustNode {
 		this.character = value;
 	}
 
+	/**
+	 * Serializes the node to string
+	 * 
+	 * @return The code string
+	 */
 	@Override
 	public String toString() {
 		return String.format("{~%s}", this.getCode());
 	}
 
+	/**
+	 * Renders the node to string
+	 * 
+	 * @param dust
+	 *            The current render engine
+	 * @param chain
+	 *            The current chain of nodes being rendered
+	 * @param context
+	 *            The chain's data context
+	 * @param model
+	 *            The current data
+	 * @return The rendered output
+	 */
 	@Override
 	public String render(XDust dust, RenderChain chain, Context context,
 			Object model) {

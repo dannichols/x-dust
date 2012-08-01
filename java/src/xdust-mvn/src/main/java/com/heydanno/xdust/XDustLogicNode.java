@@ -4,13 +4,32 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Node for looping and value testing
+ */
 public class XDustLogicNode extends XDustNode implements IXDustSectionNode {
 
 	private static final long serialVersionUID = 2169863162076222163L;
 
+	/**
+	 * The name of the truthy block
+	 */
 	public static final String BLOCK = "block";
+	/**
+	 * The name of the falsy block
+	 */
 	public static final String ELSE = "else";
 
+	/**
+	 * Constructor
+	 * 
+	 * @param path
+	 *            The path to resolve against the data context
+	 * @param scope
+	 *            An alternate path to select the block's data context
+	 * @param parameters
+	 *            Variables to define for the block
+	 */
 	public XDustLogicNode(String path, String scope,
 			Map<String, XDustNode> parameters) {
 		super();
@@ -34,14 +53,29 @@ public class XDustLogicNode extends XDustNode implements IXDustSectionNode {
 	private ContextResolver scope;
 	private XDustNodeList currentBody;
 
+	/**
+	 * Gets the dust operator character associated with this node type
+	 * 
+	 * @return The operator character
+	 */
 	public String getOperator() {
 		return "#";
 	}
 
+	/**
+	 * Whether or not this type of logic node can function as a loop
+	 * 
+	 * @return True if the node allows iteration
+	 */
 	public boolean getAllowIteration() {
 		return true;
 	}
 
+	/**
+	 * Gets the named blocks that the logic node switches between
+	 * 
+	 * @return A map of the blocks
+	 */
 	public Map<String, XDustNodeList> getBodies() {
 		if (null == this.bodies) {
 			this.bodies = new HashMap<String, XDustNodeList>();
@@ -49,18 +83,39 @@ public class XDustLogicNode extends XDustNode implements IXDustSectionNode {
 		return this.bodies;
 	}
 
+	/**
+	 * Gets the context resolver used to determine what data point is tested
+	 * 
+	 * @return The context resolver
+	 */
 	public ContextResolver getContext() {
 		return this.context;
 	}
 
+	/**
+	 * Gets the context resolver used to determine the data context of the body
+	 * that's rendered
+	 * 
+	 * @return The context resolver
+	 */
 	public ContextResolver getScope() {
 		return this.scope;
 	}
 
+	/**
+	 * Gets the currently open body
+	 * 
+	 * @return The body
+	 */
 	public XDustNodeList getCurrentBody() {
 		return this.currentBody;
 	}
 
+	/**
+	 * Gets a map of variables that's passed to the body
+	 * 
+	 * @return The map of parameters
+	 */
 	public Map<String, XDustNode> getParameters() {
 		if (null == this.parameters) {
 			this.parameters = new HashMap<String, XDustNode>();
@@ -68,6 +123,11 @@ public class XDustLogicNode extends XDustNode implements IXDustSectionNode {
 		return this.parameters;
 	}
 
+	/**
+	 * Serializes the node to string
+	 * 
+	 * @return The code string
+	 */
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder("{");
@@ -99,6 +159,13 @@ public class XDustLogicNode extends XDustNode implements IXDustSectionNode {
 		return sb.toString();
 	}
 
+	/**
+	 * Begins a new body
+	 * 
+	 * @param The
+	 *            name of the body
+	 * @return The root node of the body
+	 */
 	public XDustNodeList startBody(String name) {
 		XDustNodeList body = new XDustNodeList(null);
 		this.currentBody = body;
@@ -106,10 +173,26 @@ public class XDustLogicNode extends XDustNode implements IXDustSectionNode {
 		return body;
 	}
 
+	/**
+	 * Seals the current body
+	 */
 	public void endBody() {
 		this.currentBody = null;
 	}
 
+	/**
+	 * Readies a model to be rendered
+	 * 
+	 * @param dust
+	 *            The current dust render engine instance
+	 * @param chain
+	 *            The current chain of nodes being rendered
+	 * @param context
+	 *            The current data context
+	 * @param model
+	 *            The current data model
+	 * @return The prepared context object
+	 */
 	public Context prepareModel(XDust dust, RenderChain chain, Context context,
 			Object model) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
@@ -123,6 +206,21 @@ public class XDustLogicNode extends XDustNode implements IXDustSectionNode {
 		return result;
 	}
 
+	/**
+	 * Renders a body to string
+	 * 
+	 * @param dust
+	 *            The current dust render engine instance
+	 * @param name
+	 *            The name of the body to render
+	 * @param chain
+	 *            The current chain of nodes being rendered
+	 * @param context
+	 *            The current data context
+	 * @param model
+	 *            The current data model
+	 * @return The rendered body
+	 */
 	public String renderBody(XDust dust, String name, RenderChain chain,
 			Context context, Object model) {
 		StringBuilder sb = new StringBuilder();
@@ -162,6 +260,13 @@ public class XDustLogicNode extends XDustNode implements IXDustSectionNode {
 		return sb.toString();
 	}
 
+	/**
+	 * Determines whether or not an object fits the standard of truthfulness
+	 * 
+	 * @param obj
+	 *            The object to test
+	 * @return True when the object is deemed truthy
+	 */
 	protected boolean isTruthy(Object obj) {
 		if (null == obj) {
 			return false;
@@ -178,11 +283,33 @@ public class XDustLogicNode extends XDustNode implements IXDustSectionNode {
 		}
 	}
 
+	/**
+	 * Selects the name of the body to render
+	 * 
+	 * @param context
+	 *            The current data context
+	 * @param model
+	 *            The current data model
+	 * @return The name of the body to render
+	 */
 	public String chooseBodyName(Context context, Object model) {
 		Object resolved = this.getContext().resolve(context, model);
 		return this.isTruthy(resolved) ? BLOCK : ELSE;
 	}
 
+	/**
+	 * Renders the node to string
+	 * 
+	 * @param dust
+	 *            The current render engine
+	 * @param chain
+	 *            The current chain of nodes being rendered
+	 * @param context
+	 *            The chain's data context
+	 * @param model
+	 *            The current data
+	 * @return The rendered output
+	 */
 	@Override
 	public String render(XDust dust, RenderChain chain, Context context,
 			Object model) {

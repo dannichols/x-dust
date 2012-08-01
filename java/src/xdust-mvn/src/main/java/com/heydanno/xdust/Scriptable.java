@@ -8,10 +8,21 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Wrapper that allows an object to be worked with similarly to a JavaScript
+ * object
+ */
 public class Scriptable implements IScriptable, Serializable {
 
 	private static final long serialVersionUID = -6344366299280534777L;
 
+	/**
+	 * Wraps an object, if it isn't already
+	 * 
+	 * @param obj
+	 *            The object to wrap
+	 * @return The scriptable version of that object
+	 */
 	public static IScriptable from(Object obj) {
 		if (null != obj && obj instanceof IScriptable) {
 			return (IScriptable) obj;
@@ -52,6 +63,11 @@ public class Scriptable implements IScriptable, Serializable {
 		}
 	}
 
+	/**
+	 * Gets the raw value of the object
+	 * 
+	 * @return The raw value of the object
+	 */
 	public Object getValue() {
 		if (this.targetIsValue) {
 			return this.target;
@@ -63,6 +79,11 @@ public class Scriptable implements IScriptable, Serializable {
 		}
 	}
 
+	/**
+	 * Indicates whether or not this object is a raw value
+	 * 
+	 * @return True if the object is a raw value
+	 */
 	public boolean isValue() {
 		if (this.targetIsContext && ((Context) this.target).getTail() != null) {
 			return ((Context) this.target).getTail().isValue();
@@ -71,10 +92,20 @@ public class Scriptable implements IScriptable, Serializable {
 		}
 	}
 
+	/**
+	 * Indicates whether or not this object is a list
+	 * 
+	 * @return True if the object is a list
+	 */
 	public boolean isList() {
 		return this.targetIsList;
 	}
 
+	/**
+	 * Gets an iterable representation of the object
+	 * 
+	 * @return This object as a List
+	 */
 	@SuppressWarnings("unchecked")
 	public List<Object> asList() {
 		if (this.targetIsList) {
@@ -94,6 +125,12 @@ public class Scriptable implements IScriptable, Serializable {
 		}
 	}
 
+	/**
+	 * Indicates whether or not this object meets the JavaScript criteria for
+	 * truthfulness
+	 * 
+	 * @return True if the object meets the criteria
+	 */
 	@SuppressWarnings("unchecked")
 	public boolean isTruthy() {
 		if (this.targetIsNull) {
@@ -149,6 +186,13 @@ public class Scriptable implements IScriptable, Serializable {
 		return null;
 	}
 
+	/**
+	 * Gets a property from the object, given its name
+	 * 
+	 * @param name
+	 *            The name of the property
+	 * @return The value of the property
+	 */
 	@SuppressWarnings("unchecked")
 	public Object get(String name) {
 		if (this.targetIsContext) {
@@ -178,6 +222,13 @@ public class Scriptable implements IScriptable, Serializable {
 		return null;
 	}
 
+	/**
+	 * Indicates whether or not the object has a property
+	 * 
+	 * @param name
+	 *            The name of the property
+	 * @return True if the object has a property with that name
+	 */
 	@SuppressWarnings("unchecked")
 	public boolean hasKey(String name) {
 		if (this.targetIsNull || this.targetIsValue) {
@@ -192,6 +243,11 @@ public class Scriptable implements IScriptable, Serializable {
 		}
 	}
 
+	/**
+	 * Produces an iterator for all of the keys in an object
+	 * 
+	 * @return The iterator
+	 */
 	@SuppressWarnings("unchecked")
 	public Iterator<String> iterator() {
 		if (this.targetIsNull || this.targetIsValue) {
@@ -217,6 +273,11 @@ public class Scriptable implements IScriptable, Serializable {
 		}
 	}
 
+	/**
+	 * Serializes the object to string
+	 * 
+	 * @return The string representation of the object
+	 */
 	@Override
 	public String toString() {
 		if (this.targetIsNull) {

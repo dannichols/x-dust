@@ -5,10 +5,21 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * Node that outputs the value of a variable
+ */
 public class XDustVariableNode extends XDustNode {
 
 	private static final long serialVersionUID = 3217038974087935258L;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param path
+	 *            The path to the variable
+	 * @param filters
+	 *            A list of the names of filters to be applied to the variable
+	 */
 	public XDustVariableNode(String path, Collection<String> filters) {
 		super();
 		this.context = new ContextResolver(path);
@@ -21,10 +32,20 @@ public class XDustVariableNode extends XDustNode {
 	private ContextResolver context;
 	private List<String> filters;
 
+	/**
+	 * Gets the context resolver used to find the variable
+	 * 
+	 * @return The context resolver
+	 */
 	public ContextResolver getContext() {
 		return context;
 	}
 
+	/**
+	 * Serializes the node to string
+	 * 
+	 * @return The code string
+	 */
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder("{");
@@ -38,6 +59,19 @@ public class XDustVariableNode extends XDustNode {
 		return sb.toString();
 	}
 
+	/**
+	 * Renders the node to string
+	 * 
+	 * @param dust
+	 *            The current render engine
+	 * @param chain
+	 *            The current chain of nodes being rendered
+	 * @param context
+	 *            The chain's data context
+	 * @param model
+	 *            The current data
+	 * @return The rendered output
+	 */
 	@Override
 	public String render(XDust dust, RenderChain chain, Context context,
 			Object model) {

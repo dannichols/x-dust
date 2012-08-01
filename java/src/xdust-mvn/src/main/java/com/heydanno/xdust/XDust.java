@@ -9,6 +9,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+/**
+ * The x-dust rendering engine
+ */
 public class XDust {
 
 	private class NoOpFilter implements IXDustFilter {
@@ -64,6 +67,9 @@ public class XDust {
 	private class EscapeURIComponentFilter extends EscapeURIFilter {
 	}
 
+	/**
+	 * Constructs an instance of the x-dust rendering engine
+	 */
 	public XDust() {
 		this.parser = new XDustNodeListParser();
 		this.getFilters().put("s", new NoOpFilter());
@@ -74,12 +80,20 @@ public class XDust {
 		this.setContextPath(System.getProperty("user.dir"));
 	}
 
+	/**
+	 * The object used to parse strings into x-dust node trees
+	 */
 	protected XDustNodeListParser parser;
 	private Map<String, XDustTemplate> templates;
 	private Map<String, IXDustHelper> helpers;
 	private Map<String, IXDustFilter> filters;
 	private String contextPath;
 
+	/**
+	 * Gets the hash of parsed x-dust templates
+	 * 
+	 * @return The hash of templates
+	 */
 	public Map<String, XDustTemplate> getTemplates() {
 		if (null == this.templates) {
 			this.templates = new HashMap<String, XDustTemplate>();
@@ -87,6 +101,11 @@ public class XDust {
 		return this.templates;
 	}
 
+	/**
+	 * Gets the helpers available to the engine
+	 * 
+	 * @return The hash of helpers
+	 */
 	public Map<String, IXDustHelper> getHelpers() {
 		if (null == this.helpers) {
 			this.helpers = new HashMap<String, IXDustHelper>();
@@ -94,6 +113,11 @@ public class XDust {
 		return this.helpers;
 	}
 
+	/**
+	 * Gets the filters available to the engine
+	 * 
+	 * @return The hash of filters
+	 */
 	public Map<String, IXDustFilter> getFilters() {
 		if (null == this.filters) {
 			this.filters = new HashMap<String, IXDustFilter>();
@@ -101,22 +125,61 @@ public class XDust {
 		return this.filters;
 	}
 
+	/**
+	 * Encodes an object for inclusion in HTML code
+	 * 
+	 * @param obj
+	 *            The object
+	 * @return The escaped HTML string
+	 */
 	public String escapeHTML(Object obj) {
 		return new EscapeHTMLFilter().call(this, obj);
 	}
 
+	/**
+	 * Encodes an object for inclusion in JavaScript string code
+	 * 
+	 * @param obj
+	 *            The object
+	 * @return The escaped JS string
+	 */
 	public String escapeJS(Object obj) {
 		return new EscapeJSFilter().call(this, obj);
 	}
 
+	/**
+	 * Encodes an object for inclusion in a URI string
+	 * 
+	 * @param obj
+	 *            The object
+	 * @return The escaped URI string
+	 */
 	public String escapeURI(Object obj) {
 		return new EscapeURIFilter().call(this, obj);
 	}
 
+	/**
+	 * Encodes an object for inclusion as a URI component
+	 * 
+	 * @param obj
+	 *            The object
+	 * @return The escaped URI component string
+	 */
 	public String escapeURIComponent(Object obj) {
 		return new EscapeURIComponentFilter().call(this, obj);
 	}
 
+	/**
+	 * Readies template code for use and stores it in the templates map
+	 * 
+	 * @param str
+	 *            The template source code
+	 * @param name
+	 *            The name by which to reference the template
+	 * @param sourceFile
+	 *            The source file that held the template source (if any)
+	 * @return The root node of the parsed template
+	 */
 	public XDustNode compile(String str, String name, String sourceFile) {
 		XDustNode rootNode = this.parser.parse(this, str);
 		this.getTemplates().put(name,
@@ -124,6 +187,16 @@ public class XDust {
 		return rootNode;
 	}
 
+	/**
+	 * Compiles a template from file
+	 * 
+	 * @param sourceFile
+	 *            The path to the template file
+	 * @param name
+	 *            The name under which to store the compiled template
+	 * @return The root node of the parsed template
+	 * @throws IOException
+	 */
 	public XDustNode load(String sourceFile, String name) throws IOException {
 		if (null == name || "".equals(name)) {
 			name = sourceFile;
@@ -154,6 +227,16 @@ public class XDust {
 		}
 	}
 
+	/**
+	 * Renders a template
+	 * 
+	 * @param name
+	 *            The name of the template to render
+	 * @param model
+	 *            The data to pass to the template
+	 * @param action
+	 *            The object to which to pass the results of the operation
+	 */
 	public void render(String name, Object model, IXDustResult action) {
 		XDustTemplate template = this.getTemplates().get(name);
 		String output = null;
@@ -166,10 +249,21 @@ public class XDust {
 		action.call(error, output);
 	}
 
+	/**
+	 * Gets the current context root path
+	 * 
+	 * @return The context path
+	 */
 	public String getContextPath() {
 		return this.contextPath;
 	}
 
+	/**
+	 * Sets the current context root path
+	 * 
+	 * @param path
+	 *            The context path
+	 */
 	public void setContextPath(String path) {
 		this.contextPath = path.replace("\\", "/").replace("//", "/");
 	}

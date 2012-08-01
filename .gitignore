@@ -1,6 +1,5 @@
+.classpath
 
-js/src/.DS_Store
+.DS_Store
 
-js/dist/.DS_Store
-
-js/test/.DS_Store
+java/src/xdust-mvn/target

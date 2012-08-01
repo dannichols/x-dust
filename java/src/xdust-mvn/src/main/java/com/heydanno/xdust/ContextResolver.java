@@ -7,10 +7,19 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * Utility for resolving a path against a context
+ */
 public class ContextResolver implements Serializable {
 
 	private static final long serialVersionUID = -5143410657368012472L;
 
+	/**
+	 * Constructs a new context resolver for a path
+	 * 
+	 * @param path
+	 *            The path to a value within a context chain
+	 */
 	public ContextResolver(String path) {
 		if (path.startsWith(".")) {
 			this.getPath().add(".");
@@ -27,6 +36,11 @@ public class ContextResolver implements Serializable {
 
 	private List<String> path;
 
+	/**
+	 * Gets the path used by this resolver
+	 * 
+	 * @return The path
+	 */
 	public List<String> getPath() {
 		if (null == this.path) {
 			this.path = new ArrayList<String>();
@@ -34,6 +48,11 @@ public class ContextResolver implements Serializable {
 		return this.path;
 	}
 
+	/**
+	 * Serializes the context resolver to a string
+	 * 
+	 * @return The string
+	 */
 	@Override
 	public String toString() {
 		List<String> path = new ArrayList<String>(this.getPath());
@@ -49,6 +68,16 @@ public class ContextResolver implements Serializable {
 		return sb.toString();
 	}
 
+	/**
+	 * Tests the path against a model and then against a context chain,
+	 * producing the result
+	 * 
+	 * @param context
+	 *            The context chain to test
+	 * @param model
+	 *            The data model (the last item in the context chain)
+	 * @return The found value or null if no value exists on the path
+	 */
 	public Object resolve(Context context, Object model) {
 		Object copy = new Context(context, model, null);
 		if (null != model) {

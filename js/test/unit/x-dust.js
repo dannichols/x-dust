@@ -71,6 +71,13 @@ describe('x-dust', function() {
     it('can test logic without consuming scope', render('ex', '{?tags}<ul class="{foo}">{#tags}<li>{.}</li>{/tags}</ul>{:else}No tags!{/tags}', {foo: 'bar', tags: ['a', 'b', 'c']}, '<ul class="bar"><li>a</li><li>b</li><li>c</li></ul>'));
     it('can support an else block', render('ex', '{?tags}<ul class="{foo}">{#tags}<li>{.}</li>{/tags}</ul>{:else}No tags!{/tags}', {foo: 'bar', tags: []}, 'No tags!'));
   });
+  describe('^ operator', function() {
+    it('can output inner content when tested against an undefined value', render('ex', '{^tags}No tags!{:else}Yes tags!{/tags}', {foo: 'bar'}, 'No tags!'));
+    it('can output inner content when tested against a defined but falsey value', render('ex', '{^tags}No tags!{/tags}', {foo: 'bar', tags: 0}, 'No tags!'));
+    it('can output inner content when tested against an empty array', render('ex', '{^tags}No tags!{/tags}', {foo: 'bar', tags: []}, 'No tags!'));
+    it('can ignore inner content when tested against a truthy value', render('ex', '{^tags}no {/tags}tags here', {foo: 'bar', tags: ['a', 'b', 'c']}, 'tags here'));
+  	it('can support an else block', render('ex', '{^tags}No tags!{:else}<ul class="{foo}">{#tags}<li>{.}</li>{/tags}</ul>{/tags}', {foo: 'bar', tags: ['a', 'b', 'c']}, '<ul class="bar"><li>a</li><li>b</li><li>c</li></ul>'));
+  });
   describe('! operator', function() {
     it('can comment out multiple lines of text', render('ex', '{!\nMultiline {#foo}{bar}{/foo}!}{!before!}Hello{!after!}', {}, 'Hello'));
   });
